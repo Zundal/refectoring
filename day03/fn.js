@@ -1,10 +1,6 @@
 const invoice = require("./invoices.json");
 const plays = require("./plays.json");
 
-const playFor = (aPerformance) => {
-  return plays[aPerformance.playID];
-};
-
 const amountFor = (aPerformance) => {
   let result = 0;
   switch (playFor(aPerformance).type) {
@@ -39,7 +35,7 @@ const statement = (invoice, plays) => {
 
   for (let perf of invoice.performances) {
     // const play = playFor(perf);
-    let result = amountFor(perf);
+    let thisAmount = amountFor(perf);
 
     // 포인트를 적립한다.
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -47,15 +43,19 @@ const statement = (invoice, plays) => {
     if ("comedy" === playFor(perf).type)
       volumeCredits += Math.floor(perf.audience / 5);
     // 청구 내역을 출력한다.
-    result += ` ${playFor(perf).name}: ${format(result / 100)} (${
+    result += ` ${playFor(perf).name}: ${format(thisAmount / 100)} (${
       perf.audience
     }석)\n`;
-    totalAmount += result;
+    totalAmount += thisAmount;
   }
 
   result += `총액: ${format(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
+};
+
+const playFor = (aPerformance) => {
+  return plays[aPerformance.playID];
 };
 
 console.log(statement(invoice[0], plays));
