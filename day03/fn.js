@@ -23,7 +23,7 @@ const amountFor = (aPerformance) => {
   return result;
 };
 
-const statement = (invoice, plays) => {
+const statement = (invoice) => {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `청구 내역(고객명 : ${invoice.customer})\n`;
@@ -34,7 +34,6 @@ const statement = (invoice, plays) => {
   }).format;
 
   for (let perf of invoice.performances) {
-    // const play = playFor(perf);
     let thisAmount = amountFor(perf);
 
     // 포인트를 적립한다.
